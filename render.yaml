@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: uk-tactical-radar-proxy
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/status
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: ALLOWED_ORIGINS
+        sync: false
