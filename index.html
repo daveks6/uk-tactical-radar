@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07130b" />
+  <meta name="description" content="UK tactical-style live ADS-B and AIS radar PWA" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon-192.png" />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.6.0/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <title>UK Tactical Radar</title>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hud-header">
+      <div>
+        <div class="eyebrow">AIR / SEA SURVEILLANCE</div>
+        <h1>TACTICAL RADAR</h1>
+      </div>
+      <div class="header-actions">
+        <button id="installBtn" class="header-btn" type="button">⇩ INSTALL APP</button>
+        <button id="settingsBtn" class="header-btn" type="button">⚙ SETTINGS</button>
+        <div class="link-state"><span class="status-dot"></span><span id="linkText">INITIALISING</span></div>
+      </div>
+    </header>
+
+    <section class="controls" aria-label="Radar controls">
+      <div class="segmented" id="filters">
+        <button class="active" data-mode="all">ALL</button>
+        <button data-mode="military">MILITARY</button>
+        <button data-mode="civilian">CIVILIAN</button>
+        <button data-mode="vessels">VESSELS</button>
+      </div>
+      <label class="range-control">RANGE
+        <select id="rangeSelect">
+          <option value="25">25 NM</option>
+          <option value="50">50 NM</option>
+          <option value="100" selected>100 NM</option>
+          <option value="250">250 NM</option>
+        </select>
+      </label>
+      <button id="locateBtn" class="action">⌖ MY LOCATION</button>
+      <button id="recenterBtn" class="action">◎ RECENTER</button>
+      <button id="sweepBtn" class="action">Ⅱ PAUSE SWEEP</button>
+    </section>
+
+    <section class="telemetry" aria-live="polite">
+      <span id="modeReadout">MODE ALL</span>
+      <span id="rangeReadout">RANGE 100 NM</span>
+      <span id="airCount">AIR 000</span>
+      <span id="milCount">MIL 000</span>
+      <span id="shipCount">SHIP 000</span>
+      <span id="positionReadout">POS UK DEFAULT</span>
+    </section>
+
+    <section class="map-stage">
+      <div id="map" aria-label="Live UK tactical map"></div>
+      <div class="map-vignette"></div>
+      <div class="scope" aria-hidden="true">
+        <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div>
+        <div class="cross-h"></div><div class="cross-v"></div>
+        <div class="bearing b0">000°</div><div class="bearing b90">090°</div><div class="bearing b180">180°</div><div class="bearing b270">270°</div>
+        <div class="sweep" id="sweep"></div>
+        <div class="centre-mark"><span></span></div>
+      </div>
+      <div class="map-label top-left">UK SURVEILLANCE GRID</div>
+      <div class="map-label bottom-left" id="coords">53.3811 N / 1.4701 W</div>
+      <div class="map-label bottom-right">ADS-B + AIS</div>
+    </section>
+
+    <section class="contact-panel" id="contactPanel">
+      <div class="contact-empty">SELECT A CONTACT ON THE MAP</div>
+    </section>
+
+    <footer class="footer-line">
+      <span id="adsbFooter">Aircraft: adsb.lol</span><span>Map: OpenFreeMap / OpenStreetMap</span><span id="aisFooter">AIS: key not configured</span>
+    </footer>
+  </main>
+
+  <dialog id="settingsDialog" class="settings-dialog" aria-labelledby="settingsTitle">
+    <form id="settingsForm" method="dialog">
+      <div class="settings-head">
+        <div><div class="eyebrow">LOCAL DEVICE CONFIGURATION</div><h2 id="settingsTitle">SETTINGS</h2></div>
+        <button id="closeSettingsBtn" class="icon-btn" type="button" aria-label="Close settings">✕</button>
+      </div>
+
+      <div class="settings-note">
+        Keys are saved in this browser on this device only. They are never written into the public GitHub Pages files. Use HTTPS for the live app and proxy.
+      </div>
+
+      <label class="setting-field">
+        <span>DATA PROXY URL</span>
+        <input id="proxyUrlInput" type="url" inputmode="url" autocomplete="off" placeholder="https://your-radar-api.example.com" />
+        <small>Leave blank when the frontend and Node server are hosted together. GitHub Pages users should enter the separate HTTPS backend URL.</small>
+      </label>
+
+      <div class="setting-field">
+        <span>AISSTREAM API KEY</span>
+        <div class="secret-row">
+          <input id="aisKeyInput" type="password" autocomplete="off" spellcheck="false" placeholder="Paste AISStream key" />
+          <button class="mini-btn" type="button" data-reveal="aisKeyInput">SHOW</button>
+        </div>
+        <small>Used for live vessel positions. The key is sent to your configured proxy only when vessel data is requested.</small>
+      </div>
+
+      <div class="setting-field">
+        <span>ADS-B API KEY <em>OPTIONAL</em></span>
+        <div class="secret-row">
+          <input id="adsbKeyInput" type="password" autocomplete="off" spellcheck="false" placeholder="Optional provider key" />
+          <button class="mini-btn" type="button" data-reveal="adsbKeyInput">SHOW</button>
+        </div>
+        <small>The default adsb.lol feed does not require a key. This is stored for a future/custom keyed ADS-B provider or proxy.</small>
+      </div>
+
+      <div class="settings-status" id="settingsStatus" aria-live="polite">NOT SAVED YET</div>
+      <div class="settings-actions">
+        <button id="saveSettingsBtn" class="primary-btn" type="submit">SAVE ON THIS DEVICE</button>
+        <button id="clearSettingsBtn" class="danger-btn" type="button">CLEAR SAVED KEYS</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
