@@ -21,7 +21,11 @@ app.use((req, res, next) => {
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
-app.use(express.static(root, { maxAge: '1h', extensions: ['html'] }));
+// Render's public service must always have an explicit homepage response.
+// Keep the static middleware for assets, then fall back to index.html for PWA
+// navigation paths that are not API requests.
+app.get(['/', '/index.html'], (_req, res) => res.sendFile(path.join(root, 'index.html')));
+app.use(express.static(root, { maxAge: '1h', index: 'index.html', extensions: ['html'] }));
 
 const cache = new Map();
 async function cachedJson(key, url, ttlMs = 4000) {
@@ -67,4 +71,8 @@ app.get('/api/aircraft', async (req, res) => {
 });
 app.get('/api/status', (_req, res) => res.json({ aircraft: 'adsb.lol', coverage: 'visible-region', maxRadiusNm: MAX_RADIUS_NM }));
 app.get('/health', (_req, res) => res.json({ ok: true }));
+app.use((req, res, next) => {
+  if (req.method !== 'GET' || req.path.startsWith('/api/')) return next();
+  res.sendFile(path.join(root, 'index.html'));
+});
 app.listen(PORT, () => console.log(`Tactical Radar running on http://localhost:${PORT}`));
