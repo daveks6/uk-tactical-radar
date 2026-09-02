@@ -9,7 +9,7 @@
   <link rel="icon" href="./icon-192.png" />
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.6.0/dist/maplibre-gl.css" />
   <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="./startup.css?v=2" />
+  <link rel="stylesheet" href="./startup.css?v=3" />
   <title>UK Tactical Radar</title>
 </head>
 <body>
@@ -21,15 +21,14 @@
       <p id="startupStatus">POSITIONING OFFLINE // WORLD VIEW READY</p>
     </div>
     <div id="globeScene" class="globe-scene" aria-hidden="true">
-      <div class="globe"><img class="earth-image" src="./earth-tactical.png?v=2" alt="" /><div class="globe-glow"></div></div>
-      <div class="orbit orbit-a"></div>
-      <div class="orbit orbit-b"></div>
-      <div class="orbit orbit-c"></div>
+      <video class="intro-video" autoplay muted loop playsinline preload="auto">
+        <source src="./intro-globe.mp4" type="video/mp4" />
+      </video>
     </div>
     <div id="terminal" class="startup-terminal" aria-live="polite"></div>
     <button id="startupLocateBtn" class="startup-locate" type="button">⌖ LOCATE</button>
     <button id="startupWorldBtn" class="startup-world" type="button">CONTINUE IN WORLD VIEW</button>
-    <p class="startup-note">Satellite graphics are thematic. Position is provided by your browser's location service.</p>
+    <p class="startup-note">Intro graphics are thematic. Position is provided by your browser's location service.</p>
   </section>
   <main class="app-shell">
     <header class="hud-header">
@@ -124,3 +123,4 @@
   <script type="module" src="./app.js"></script>
 </body>
 </html>
+
