@@ -9,7 +9,7 @@
   <link rel="icon" href="./icon-192.png" />
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.6.0/dist/maplibre-gl.css" />
   <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="./startup.css" />
+  <link rel="stylesheet" href="./startup.css?v=2" />
   <title>UK Tactical Radar</title>
 </head>
 <body>
@@ -21,10 +21,10 @@
       <p id="startupStatus">POSITIONING OFFLINE // WORLD VIEW READY</p>
     </div>
     <div id="globeScene" class="globe-scene" aria-hidden="true">
-      <div class="globe"><div class="globe-grid"></div><div class="globe-glow"></div></div>
-      <div class="orbit orbit-a"><span class="satellite">▰</span></div>
-      <div class="orbit orbit-b"><span class="satellite">▰</span></div>
-      <div class="orbit orbit-c"><span class="satellite">▰</span></div>
+      <div class="globe"><img class="earth-image" src="./earth-tactical.png?v=2" alt="" /><div class="globe-glow"></div></div>
+      <div class="orbit orbit-a"></div>
+      <div class="orbit orbit-b"></div>
+      <div class="orbit orbit-c"></div>
     </div>
     <div id="terminal" class="startup-terminal" aria-live="polite"></div>
     <button id="startupLocateBtn" class="startup-locate" type="button">⌖ LOCATE</button>
