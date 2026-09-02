@@ -1,7 +1,7 @@
 {
-  "name": "UK Tactical Radar",
+  "name": "Worldwide Tactical Radar",
   "short_name": "Tac Radar",
-  "description": "Military-styled UK ADS-B and AIS surveillance PWA",
+  "description": "Worldwide tactical-style live aircraft surveillance PWA",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
